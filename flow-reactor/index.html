@@ -1,0 +1,41 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <button onclick="requestScreenTime()">Get Screen Time</button>
+    <div id="screen-time">Waiting...</div>
+
+    <script>
+      function requestScreenTime() {
+        if (window.AndroidInterface && window.AndroidInterface.getScreenTime) {
+          window.AndroidInterface.getScreenTime(); // Call native
+        } else {
+          console.warn("❌ AndroidInterface not found");
+        }
+      }
+
+      // This gets called by native Android code with the JSON screen time info
+      window.receiveScreenTime = function (screenTimeJson) {
+        try {
+          const screenTime = JSON.parse(screenTimeJson);
+          console.log("📱 Screen Time Data:", screenTime);
+
+          document.getElementById(
+            "screen-time"
+          ).innerText = `Today's screen time: ${screenTime.totalMinutes} minutes`;
+        } catch (e) {
+          console.error("Invalid JSON from native:", e);
+        }
+      };
+    </script>
+  </body>
+</html>
