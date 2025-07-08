@@ -1,0 +1,7 @@
+{
+  "appId": "com.example.app",
+  "appName": "flow-reactor",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
+
